@@ -1,0 +1,253 @@
+Linux commands->
+
+ls
+
+mkdir
+
+rmdir
+
+touch
+
+man
+
+history
+
+man ls
+
+ls -A
+
+pwd
+
+date
+
+cal
+
+who
+
+whoami
+
+cd -
+
+?,*,~,- wild characters
+
+rm -rf
+
+clear
+
+cd $HOME ->directly take to home dir from anywhere
+
+cat get-docker.sh |grep docker ->it will go inside file and | will go on top of that and grep docker will search for docker
+
+cat {file} -> see the contents of file
+
+cat >{file} -> create and write contents in file
+
+cat >>{file} -> write and append content in file
+
+cp {file1} {file2} -> copy from file1 to file2
+
+cp {file1} {file2} {dir} -> copy file1 and file2 to directory dir
+
+cp -i -> will overwrite files
+
+mv
+
+mv -n
+
+find . -name {file} ->search for file
+
+find . -iname {file} -> ignore case sensitive and search for file
+
+find . -name "*.*" -exec grep "ERROR" {} \;
+
+sort
+
+sort -u ->remove duplicate then sort
+
+sort -r -> sort in reverse
+
+top -> gives Linux processes
+
+df -h -> gives usage of hard disk space
+
+cat /etc/passwd -> shows all users in machine
+
+cut -b 1,2 {file} -> gives 1st,2nd bytes of every line in file
+
+cut -b 3- {file} -> gives 3rd byte till ending of every line
+
+cut -c
+
+cut -d ":" -f 1,6 /etc/passwd ->get column 1 and 6 for the file with respect to delemitor :
+
+less /etc/passwd
+
+head /etc/passwd
+
+head -n 12 /etc/passwd
+
+tail /etc/passwd ->it shows the last 10 lines but its static and will not change with the updates in file
+
+tail -f /etc/passwd -> it shows the 10 last lines but its dynamic and it updates along with the changes in file
+
+tar -cvf file.tar file.txt ->compress file.txt to file.tar
+
+tar xvf file.tar ->extract and show files in file.tar
+
+df -hT -> seeing overall disk space usage for the entire filesystem, along with the filesystem type.
+
+du -h -> checks the size of files and directories within a specific path.
+
+free
+
+netstat -ru
+
+netstat -an |grep LISTEN -
+
+wget ust.com
+
+wget -O a.txt github.com -> very important command -> used for downloading
+
+curl -X GET ->used for interacting with apis,send http requests
+
+curl https://get.docker.com -o get_docker.sh -> fetch webpage content
+
+uname -a
+
+shutdown
+
+reboot
+
+join
+
+alias ll='ls -l'
+
+unalias ll
+
+gzip
+
+zip
+
+ungzip
+
+which ls
+
+lsof -i tcp
+
+locate {file}
+
+diff {file1} {file2}
+
+echo "Hello World" | tr '[:lower:]' '[:upper:]'
+
+echo "Ust Global" | tr -d 'aeiou'
+
+Link,Soft Link,Hard Link,Inode
+
+ln
+
+ln -s
+
+ps -aux
+
+ps -elf
+
+crontab -e
+
+crontab -l
+
+sed 's/{text1}/{text2}' {file} -> it will replace all text1 to text2 in file
+
+sed -n '2p' test.txt
+
+sed -i
+
+tr
+
+wc
+
+alias
+
+systemctl start docker
+
+systemctl status docker
+
+awk '{print}' {file} -> prints every line of file
+
+awk '{print $1}' {file} -> prints first column of every line of file
+
+awk '/pattern/{print}' {file} -> prints the pattern matching word in file
+
+awk '{print NR,$0}' {file} ->displays line number of every line with the line in file
+
+scp user@{ip address}:{pwd}/{file} {directory to copy) -> it can transfer file of Linux to directory of windows
+
+read,write,execute permission ->
+
+chmod 777 - everybody has read,write,execute
+
+chmod 400 - owner has read permission,groups and others have no permission
+
+drwxrwxrwx -> here d is directory and - is file ,first rwx is for owner,second is groups permission,third is all other users
+
+chown
+
+folders inside in / ->
+
+/boot,/dev,/bin,/mnt,/dev/null,/sys,/etc/resolv.conf folder
+
+command for dns resolution -> /etc# resolvectl status
+
+command for log rotation -> /etc# cat logrotate.conf
+
+directory for installing software -> /opt
+
+directory for download files -> /tmp
+
+dir for user related -> /usr
+
+/usr/sbin -> system administrator commands stored here
+
+/usr/bin -> binaries for user
+
+/usr/lib -> libraries stored there
+
+vi editor in linux and its commands ->
+
+b->move to previous word,
+
+w->move to next word,
+
+dd->delete line,
+
+dw->delete word,
+
+yy->copy line,
+
+yw->copy word,
+
+/{text} ->search, if we do n it will go to next word of the same text and for N it will go to previous word of same text
+
+0(zero) ->go to starting of line,
+
+o ->go one line below
+
+O -> go one line above
+
+h,j,k,l
+
+$->end of line,
+
+:$->go to last line,
+
+:{number}->go to that line,
+
+:set number -> it will give numbers to every line
+
+to disable it,:set nonumber
+
+:split {file} ->makes 2 tabs like structure of 2 files
+
+:vsplit {file} ->vertical split,
+
+:%s/{from}/{to}/g -> swap all texts of {from} to {to}
