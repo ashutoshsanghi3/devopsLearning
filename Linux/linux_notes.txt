@@ -1,0 +1,427 @@
+1. Intro to Linux
+
+- Open-source operating system based on Unix.
+
+- Known for stability, security, and flexibility.
+
+- Used in servers, desktops, and embedded systems.
+
+- Primarily uses a command-line interface (CLI), but GUIs are available.
+
+- Linux distributions (e.g., Ubuntu, Fedora, Debian) offer different user experiences.
+
+2. Getting Familiar with the Command Line
+
+- Terminal (CLI) is the primary interface for interacting with Linux.
+
+- Used for file management, running programs, and system configuration.
+
+- More efficient than GUIs for many tasks once you're familiar.
+
+- Essential for advanced Linux usage and system administration.
+
+3. File Management
+
+- Linux file system is hierarchical (directories within directories).
+
+- Core tasks include navigating, creating, deleting, copying, and moving files.
+
+- Files and directories have specific permissions (read, write, execute).
+
+- Permissions control access and security for different users.
+
+4. Algorithms and Software Engineering
+
+- Linux is a popular environment for software development and engineering.
+
+- Used for coding, compiling, testing, and debugging applications.
+
+- Supports many programming languages like C, Python, Java, and more.
+
+- Tools available for version control (e.g., Git) and debugging.
+
+- Software engineering principles such as code refactoring and testing are vital.
+
+5. File Editing
+
+- File editing in Linux can be done with command-line or graphical editors.
+
+- Popular command-line editors: vim, nano, emacs.
+
+- Used for editing code, configuration files, system logs, and scripts.
+
+- Command-line editors are powerful and efficient for programming tasks.
+
+6. Linux Security
+- Objective: Protect the Linux system and its data from unauthorized access, ensuring the confidentiality, integrity, and availability of the system.
+- Authentication Methods:
+  - Use strong passwords or SSH keys for secure authentication.
+  - Set up two-factor authentication (2FA) for added security.
+- Firewalls:
+  - Tools like iptables or ufw (Uncomplicated Firewall) allow for controlling network traffic, allowing you to block or permit specific traffic.
+- Regular Updates:
+  - Regularly update the system with security patches to fix vulnerabilities. Commands like apt-get update and yum update are used to update package repositories and install security patches.
+- Monitoring:
+  - Use system logs (located in /var/log/) to monitor activities and detect any suspicious activity.
+  - Tools like Fail2ban can automatically ban IPs attempting brute force attacks.
+- Encryption:
+  - Use tools like GPG (GNU Privacy Guard) to encrypt data at rest.
+  - Enable full disk encryption during system installation for additional security.
+
+7. User and Group Creation
+- Creating Users:
+  - useradd <username>: Adds a new user to the system. By default, no password is assigned, so use passwd <username> to set one.
+  - Example: useradd john
+- Creating Groups:
+  - groupadd <groupname>: Adds a new group, which can be used to manage permissions collectively.
+  - Example: groupadd developers
+- Modifying Users:
+  - usermod <options> <username>: Modify user details like group membership, home directory, etc.
+  - Example: usermod -aG developers john
+- Managing Passwords:
+  - passwd <username>: Set or change the password for a user.
+  - Example: passwd john
+
+8. User Ownership and Permissions
+- Every file has an owner and a group.
+- Permissions control access:
+  - Read (r): View the content.
+  - Write (w): Modify the content.
+  - Execute (x): Run the file or script.
+- Changing Permissions:
+  - chmod <permissions> <file>: Use chmod to change file permissions.
+  - Example: chmod 755 file.txt
+- Changing Ownership:
+  - chown <user>:<group> <file>: Changes the ownership of a file.
+  - Example: chown john:developers file.txt
+- Changing Group Ownership:
+  - chgrp <group> <file>: Changes the group ownership of a file.
+  - Example: chgrp developers file.txt
+
+9. Linux Networking
+- Set up network interfaces with ifconfig or ip.
+  - ifconfig or ip: View and configure network interfaces.
+  - Example: ip addr show
+- Configure static or dynamic IP addresses.
+  - Use DHCP to automatically get an IP address or manually configure a static IP.
+  - Example: ifconfig eth0 192.168.1.10 netmask 255.255.255.0
+- Use ping to check connectivity:
+  - ping <destination>: Send network packets to test connectivity.
+  - Example: ping 8.8.8.8
+- netstat to view active connections:
+  - netstat -tuln: Shows listening ports and active connections.
+  - Example: netstat -tuln
+- Use traceroute to trace network routes:
+  - traceroute <destination>: Trace the path packets take to a remote host.
+  - Example: traceroute google.com
+- nslookup to query DNS records:
+  - nslookup <domain>: Query DNS servers for IP addresses of a domain.
+  - Example: nslookup google.com
+
+10. Inter Process Communication
+- Mechanisms that allow processes to communicate with each other:
+  - Pipes, message queues, and shared memory.
+- Monitoring Processes:
+  - ps <options>: View running processes.
+  - Example: ps aux
+- Sending Signals to Processes:
+  - kill <PID>: Terminate a process by sending a signal (default signal is SIGTERM).
+  - Example: kill 1234
+- Background and Foreground Processes:
+  - bg: Move a process to the background.
+  - fg: Bring a process to the foreground.
+  - Example: bg %1, fg %1
+
+11. Disk Usage and Working with Multiple Files
+- Check Disk Usage:
+  - df <options>: Displays disk space usage on all mounted filesystems.
+  - Example: df -h
+- Check Directory and File Sizes:
+  - du <options>: Displays the size of files and directories.
+  - Example: du -sh /home/user
+- Archiving Files:
+  - tar <options>: Create, view, and extract file archives.
+  - Example: tar -czf archive.tar.gz file1 file2
+- Compressing Files:
+  - gzip or bzip2: Compress files to save disk space.
+  - Example: gzip file.txt
+- Working with Multiple Files:
+  - cp <source> <destination>: Copy files.
+  - mv <source> <destination>: Move or rename files.
+  - rm <file>: Remove files.
+  - Example: cp file1.txt file2.txt, mv file1.txt new_location/
+
+12. Working with Processes
+- Monitor Processes:
+  - ps: View running processes.
+  - top/htop: Display processes in real-time with resource usage.
+  - Example: ps aux, top
+- Killing Processes:
+  - kill <PID>: Terminate a process by sending a signal.
+  - Example: kill 1234
+- Job Control:
+  - bg: Move process to the background.
+  - fg: Bring process to the foreground.
+  - Example: fg %1
+- Managing System Load:
+  - Use tools like top/htop to monitor CPU and memory usage.
+  - Example: htop
+
+13. Basics of Networking for Linux
+- TCP/IP stack, routing, and DNS configuration:
+  - Linux uses TCP/IP as its networking protocol, and configuring routing and DNS is essential for communication.
+- Configuring Network Interfaces:
+  - Use ifconfig or ip to configure network interfaces, view the status, and assign IP addresses.
+  - Example: ip addr show
+- Bringing Interfaces Up and Down:
+  - ifup: Bring up a network interface.
+  - ifdown: Bring down a network interface.
+  - Example: ifup eth0
+- Configuring Hostname:
+  - hostname: View or change the system's hostname.
+  - Example: hostname myhost
+
+14. VI Editor
+- vi is a powerful text editor in Linux.
+- Modes:
+  - Command mode: For navigation, searching, and commands.
+  - Insert mode: For editing text.
+  - Ex mode: For saving, quitting, and other file-related commands.
+- Basic Commands:
+  - i: Enter Insert mode.
+  - Esc: Return to Command mode.
+  - :wq: Save and quit.
+  - :q!: Quit without saving.
+  - Example: vi filename
+
+15. Ownership and Permissions
+- Linux uses a permission system for files and directories.
+- Each file has an owner and a group.
+- Permissions include read (r), write (w), and execute (x).
+- Use chmod to modify permissions, chown to change ownership.
+- Example: chmod 755 filename, chown user:group filename
+
+16. Remote Connections
+- Connect to remote systems using ssh (Secure Shell).
+  - ssh <user>@<hostname>: Securely connect to a remote system.
+  - Example: ssh john@192.168.1.1
+- Copy Files Remotely:
+  - scp <source> <destination>: Securely copy files between systems.
+  - Example: scp file.txt john@192.168.1.1:/home/john/
+- Secure File Transfers:
+  - sftp: Securely transfer files between local and remote systems.
+  - Example: sftp john@192.168.1.1
+
+17. Command Line Essentials
+- Basic Commands:
+  - ls: List files and directories.
+  - cd: Change the current directory.
+  - cp: Copy files or directories.
+  - mv: Move or rename files or directories.
+  - rm: Remove files or directories.
+- View Help:
+  - man <command>: View the manual page for a command.
+  - Example: man ls
+- Examples:
+  - ls -l: List files with detailed information.
+  - cd /home/user: Change to the specified directory.
+  - rm file.txt: Remove the specified file.
+
+
+Basic Linux Commands
+
+pwd: Print working directory
+
+ls: List files and directories
+
+cd: Change directory
+
+mkdir: Make directory
+
+rmdir: Remove directory
+
+touch: Create an empty file
+
+cp: Copy files or directories
+
+mv: Move or rename files/directories
+
+rm: Remove files or directories
+
+cat: Concatenate and display file content
+
+less: View file content page by page
+
+head: Display the beginning of a file
+
+tail: Display the end of a file
+
+grep: Search for patterns in files
+
+find: Search for files and directories
+
+man: Display the manual page for a command
+
+ps: Display running processes
+
+kill: Terminate processes
+
+top: Monitor system processes and resources
+
+chmod: Change file permissions
+
+chown: Change file ownership
+
+tar: Archive files
+
+gzip: Compress files
+
+df: Display disk space usage
+
+free: Display system memory usage
+
+ping: Test network connectivity
+
+ssh: Securely connect to a remote server
+
+scp: Securely copy files between local and remote systems
+
+shutdown: Shutdown or restart the system
+
+reboot: Reboot the system
+
+uname: Display system information
+
+who: Display logged-in users
+
+File Permission Management
+
+Change File Permissions:
+
+chmod [permissions] [filename]: Modify file permissions.
+
+Example: chmod u+x file.sh (Make the file executable for the user).
+
+Change Ownership:
+
+chown [owner]:[group] [filename]: Change file ownership.
+
+Example: chown john:users file.txt (Change owner to "john" and group to "users").
+
+Change Group Ownership:
+
+chgrp [group] [filename]: Change file group ownership.
+
+Example: chgrp admin file.txt (Change group ownership to "admin").
+
+View Permissions:
+
+ls -l [filename]: List file permissions.
+
+Example: ls -l file.txt (Display file permissions for "file.txt").
+
+User Creation
+
+Create a New User:
+
+sudo useradd [username]: Create a new user.
+
+Example: sudo useradd john
+
+Set Password for User:
+
+sudo passwd [username]: Set a password for the user.
+
+Example: sudo passwd john
+
+Grant Sudo Privileges:
+
+sudo usermod -aG sudo [username]: Add the user to the sudo group.
+
+Example: sudo usermod -aG sudo john
+
+SSH Commands
+
+Establish SSH Connection:
+
+ssh [user]@[hostname]: Connect to a remote server via SSH.
+
+Example: ssh john@192.168.1.10
+
+Shell Script Commands
+
+Create a Shell Script:
+
+Create a file with .sh extension, e.g., script.sh.
+
+Add commands, e.g., echo "Hello, World!".
+
+Use chmod +x script.sh to make it executable.
+
+Execute Shell Script:
+
+./script.sh: Execute the script.
+
+Vi Editor Commands
+
+Enter Insert Mode: Press i to begin inserting text.
+
+Delete a Character: Press x to delete a character.
+
+Delete a Line: Press dd to delete the entire line.
+
+Save Changes: Type :w to save the file.
+
+Exit Vi: Type :q to quit.
+
+Network Commands
+
+Test Connectivity:
+
+ping [hostname]: Test network connection to a host.
+
+Example: ping google.com
+
+View Network Interfaces:
+
+ifconfig: Display network interface configurations.
+
+File Compression and Extraction
+
+Create Tarball:
+
+tar -cvf [archive_name].tar [files]: Create a tar archive.
+
+Example: tar -cvf archive.tar file1 file2
+
+Extract Tarball:
+
+tar -xvf [archive_name].tar: Extract contents of a tar archive.
+
+Example: tar -xvf archive.tar
+
+Compress Files with Gzip:
+
+gzip [filename]: Compress a file using gzip.
+
+Example: gzip file.txt
+
+Unzip a ZIP Archive:
+
+unzip [archive.zip]: Extract files from a ZIP archive.
+
+Disk and File System Commands
+
+Check Disk Usage:
+
+df -h: Display disk space usage in human-readable format.
+
+Check Directory Size:
+
+du -sh [directory]: Display total size of a directory.
+
+Example: du -sh /home/user
+
+
+
+
