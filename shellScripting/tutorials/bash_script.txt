@@ -1,0 +1,11 @@
+shebang
+$?
+$1,$2
+[]
+[[]]
+()
+(())
+
+if,else,elif,for,while,until,getopts
+input
+regex pattern matching
