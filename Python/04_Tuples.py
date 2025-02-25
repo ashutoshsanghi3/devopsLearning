@@ -1,0 +1,7 @@
+data_constant= ("monday","tuesday","wednesday")
+data_const2=tuple(["thursday"])
+# print(data_constant[0:2])
+print(type(data_const2))
+print(data_constant[0])
+print(data_constant+data_const2)
+print(list(data_constant))
