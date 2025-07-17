@@ -1,0 +1,37 @@
+In all these networking there is a thing which is happening all the time
+kubelet of every node will tell info about pod of its own node to api server 
+
+Fourth type
+pod---> service
+
+pod sends message and cluster ip of the service which he sends to proxy
+proxy get info through api server all the ip of all services all the time and it matches the ip of service with the cluster ip
+proxy does load balancing algo like round robin
+first it will do broadcasting and if the proxy find the target pod in its own node then it will send the message to it
+else
+then it will send to default route(eth0) and send message packet in which it countians ip of the target pod to the network plugin
+then it can't send the message directly to the target pod through the ip so it will do nating and will change from ip to node address so
+it can only send to another proxy so it will do an algo like(ip in ip) in which it will wrap the node address of the proxy
+on top of ip address of target pod
+then the network plugin will send the wrapper to the proxy and then proxy will do broadcast
+
+third type
+pod of one node to pod of another node
+
+pod sends message and ip of pod which he sends to proxy
+it will send to default route(eth0) and send message packet in which it countians ip of the target pod to the network plugin
+then it can't send the message directly to the target pod through the ip so it will do nating and will change from ip to node address so
+it can only send to another proxy so it will do an algo like(ip in ip) in which it will wrap the node address of the proxy
+on top of ip address of target pod
+then the network plugin will send the wrapper to the proxy and then proxy will do broadcast
+
+second type
+container of pod to container of another pod
+
+pod to proxy to pod
+in which proxy will create internal custom bridge 
+
+first type
+container to container of same pod
+
+using namespace 

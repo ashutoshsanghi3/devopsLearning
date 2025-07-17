@@ -1,0 +1,2 @@
+service mesh
+type of service mesh is ingress

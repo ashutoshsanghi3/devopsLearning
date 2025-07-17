@@ -1,0 +1,97 @@
+Pods creation -> 
+1. kubectl make rest api request to apiserver ,it passes the certificates and requests as a header in the rest request.it get certificates from kube-config file
+2.api server will 
+	-authenticate through the certificates
+	-authorize which it does through roles and rolesbinding
+	-validate in which it checks for correct request and linting
+	-talks to etcd which is a no sql database which can be scaled horizontally
+3. scheduler uses algo to see which is best node for pod
+4. apiserver will give the desired state
+5.if pod crashes when it is running,kubelet will solve the problem
+6. controller will tell the actual state
+
+where there is interaction with cri like image creation ,downloading etc. kubelet will work
+
+Creation of Pod in Kubernetes ->
+
+1. User Requests Pod Creation
+
+A user submits a request to create a pod using kubectl, which sends an API request to the Kubernetes API Server. The request includes authentication credentials and necessary configurations.
+
+2. API Server Processes the Request
+
+The API Server authenticates the request, verifies user permissions via RBAC, validates the pod specification, and then stores the pod definition in etcd, the cluster’s key-value store.
+
+3. Scheduler Assigns the Pod to a Node
+
+The Scheduler selects the best node for the pod based on resource availability, constraints, and affinity rules. It then updates etcd with the scheduling decision.
+
+4. API Server Notifies the Kubelet
+
+The API Server informs the Kubelet (running on the assigned node) about the new pod and its desired state. The Kubelet then prepares to run the pod.
+
+5. Kubelet Interacts with the Container Runtime (CRI)
+
+The Kubelet communicates with the Container Runtime (e.g., containerd, Docker, or CRI-O) to:
+
+	Pull the container image (if not already available).
+
+	Create and start the container.
+
+	Configure networking using CNI (Container Network Interface).
+
+6. Pod Becomes Running
+
+Once the container is successfully created, it joins the pod’s network, gets an IP address, and starts executing its application.
+
+7. Monitoring and Pod Self-Healing
+
+If a container inside the pod crashes, the Kubelet restarts it based on the restart policy.
+
+If the entire node fails, the Node Controller detects the failure and reschedules the pod on another node.
+
+8. Controllers Maintain Desired State
+
+The Controller Manager ensures the pod count and health match the defined specification. ReplicaSets, Deployments, and other controllers monitor and restore pods if they crash or are deleted.
+
+Pod table ->
+
+Serial Number | Pod Name | Image Name | Node | Desired state | Actual State
+
+
+We can access any pod in kubernetes from any machine using its ip address.
+
+If we create n number of containers,if any container crashes,kubernetes will replace that container.
+
+In old versions ->
+	-k8s will replace the container with pause container.
+	-Pause container is a secret container that runs on every pod in Kubernetes. This container’s primary job 	-is to keep the namespace open in case all the other containers on the pod die.
+	-If pause container crashes,kubernetes will replace the whole pod.
+
+kubeadm is used for installing kubernetes
+kubectl is used for interacting with api server
+kubelet is what interacts with container runtime and create pods ,if pod crashes it will automatically fix it and it is also like a local manager
+if controller is down,kubelet will solve the problem
+
+Types of controller(Check through gpt)->
+
+Node Controller → Monitors node health; if a node fails, it evicts pods and reschedules them.
+ReplicaSet Controller → Ensures the specified number of pod replicas are running.
+Deployment Controller → Manages rolling updates and rollbacks using ReplicaSets.
+Job Controller → Runs one-time jobs until completion, retrying if needed.
+DaemonSet Controller → Ensures one pod runs on every node (e.g., for monitoring/logging).
+StatefulSet Controller → Manages pods with persistent identities and storage.
+CronJob Controller → Schedules jobs to run at specific times.
+Token Controller → Manages service account tokens for API authentication.
+
+gRPC in kube-apiserver Communication ->
+gRPC (Google Remote Procedure Call) is a high-performance, open-source RPC framework used by internal Kubernetes components (such as the scheduler, controllers, and other services) to communicate efficiently with the kube-apiserver. While external clients (like kubectl) interact with the API server using HTTP REST APIs, internal communication is optimized using gRPC-based streaming and RPC calls.
+
+-Kubernetes uses gRPC for internal communication between kube-apiserver and components like the scheduler and controllers.
+-gRPC watch streams provide real-time updates, reducing API polling.
+-All gRPC interactions are TLS-encrypted and secured with RBAC.
+
+any command we execute through kubectl is talking to etcd
+
+
+

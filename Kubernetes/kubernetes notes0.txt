@@ -1,0 +1,40 @@
+Kubernetes Over Docker: Why Kubernetes Wins in Orchestration OR Kubernetes Vs docker->
+
+1. Docker runs on a single machine, but Kubernetes manages multiple machines.  
+   - If the Docker host crashes, all containers go down.  
+   - Kubernetes distributes workloads across multiple worker nodes, ensuring high availability.  
+
+2. Docker does not provide auto-healing, but Kubernetes does.  
+   - If a Docker container crashes, it won’t restart unless configured manually.  
+   - Kubernetes automatically restarts failed containers or moves them to a healthy node.  
+
+3. Docker does not auto-scale, but Kubernetes does.  
+   - Docker cannot automatically increase or decrease containers based on demand.  
+   - Kubernetes scales applications up or down using the Horizontal Pod Autoscaler (HPA).  
+
+4. Docker lacks built-in load balancing, but Kubernetes handles it natively.  
+   - Docker requires external tools like NGINX for traffic distribution.  
+   - Kubernetes automatically distributes traffic across multiple healthy pods using Services.  
+
+5. Docker networking is manual, but Kubernetes automates it.  
+   - Docker networks need manual setup for inter-container communication.  
+   - Kubernetes uses kube-proxy and CNI plugins to create a seamless cluster-wide network.  
+
+6. Docker does not manage persistent storage well, but Kubernetes does.  
+   - Docker volumes are tied to the host machine, and data is lost if the container moves.  
+   - Kubernetes uses Persistent Volumes (PVs) and Persistent Volume Claims (PVCs) for reliable storage.  
+
+7. Docker does not handle rolling updates, but Kubernetes does.  
+   - Updating a Docker container requires manual intervention and may cause downtime.  
+   - Kubernetes supports rolling updates, blue-green deployments, and canary releases for zero-downtime updates.  
+
+8. Docker does not provide enterprise-level security and networking features, but Kubernetes does.  
+   - Docker lacks built-in enterprise-grade security tools like **firewalls, API gateways, and network policies**.  
+   - Kubernetes supports **Network Policies** to restrict communication between pods.  
+   - Kubernetes integrates with **Service Meshes** like Istio for security, observability, and traffic management.  
+   - Kubernetes allows integration with **API gateways** like Kong or Ambassador for traffic control and authentication.  
+
+Conclusion:  
+Docker is great for running containers on a single machine.  
+Kubernetes is built to manage containers at scale with auto-scaling, self-healing, networking, and storage management.  
+Docker helps you run containers, but Kubernetes helps you manage them efficiently across multiple machines.

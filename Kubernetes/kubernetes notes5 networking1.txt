@@ -1,0 +1,61 @@
+networking
+1. container to another container in same pod in same node -> namespace
+2. container in pod to container in another pod in same node -> custom bridge
+3. container in pod in node to container in pod in another node -> proxy
+4. container in pod to service  -> proxy but advanced
+
+Networking in k8s ->
+
+Here's an elaboration on the different networking scenarios in Kubernetes:
+
+1. Container-to-Container Communication (Within the Same Pod)
+
+Containers inside the same pod communicate via the localhost interface.
+They share the same network namespace and can communicate directly without involving a proxy.
+
+2. Container-to-Container Communication (Across Different Pods)
+
+When a container inside one pod needs to communicate with a container in another pod, it sends a request using the IP address of the target pod.
+The request is first sent to the proxy (kube-proxy) running on the node.
+The proxy creates an internal bridge (typically a virtual network bridge, such as cbr0 or a CNI plugin bridge).
+If the target pod is on the same node, the proxy routes the traffic directly using the internal bridge.
+If the target pod is on a different node, then:
+The request is forwarded to the default route (eth0) and sent to the network plugin.
+The network plugin performs NAT (Network Address Translation), replacing the pod IP with the node's IP.
+The packet is encapsulated (IP-in-IP or VXLAN) so that it can be sent across nodes.
+The network plugin forwards the packet to the target node’s proxy, which then delivers it to the target pod.
+
+3. Pod-to-Pod Communication (Across Different Nodes)
+
+A pod sends a message to another pod using its IP address.
+The request is forwarded to the node's proxy (kube-proxy).
+The proxy sends the packet to the default route (eth0) and forwards it to the network plugin.
+Since pods have unique IPs that are not directly routable across nodes, NAT (Network Address Translation) is applied
+The source pod's IP is replaced with the node's IP.
+The target pod’s IP is wrapped using an IP-in-IP encapsulation technique, ensuring that the message reaches the correct node.
+The network plugin forwards the packet to the target node’s proxy.
+The proxy then delivers the packet to the correct pod via broadcasting.
+
+4. Pod-to-Service Communication
+
+A pod sends a request to a service's ClusterIP.
+The request is handled by the proxy (kube-proxy), which continuously fetches service-to-pod mappings from the API server.
+The proxy performs load balancing (e.g., Round Robin) to determine which backend pod should receive the request.
+If the target pod is on the same node, the proxy routes the request directly using broadcasting.
+If the target pod is on another node:
+The request is sent to the default route (eth0) and forwarded to the network plugin.
+NAT translates the packet’s destination from the ClusterIP to the appropriate node’s IP.
+An IP-in-IP encapsulation wraps the request before it reaches the target node.
+The network plugin delivers the packet to the target node’s proxy, which then forwards it to the correct pod.
+
+Underlying Network Architecture in 4th:
+
+Pod Connectivity:
+All pods on a node are connected to a custom bridge.
+The bridge is linked to the CNI plugin, with a default route set to the node’s CIDR, ensuring seamless pod-to-pod communication.
+
+Traffic Flow within a Node:
+Pod → Bridge → iptables (kube-proxy rules) → CNI → Target Pod
+
+DNS Resolution:
+Services are resolved via DNS, managed by CoreDNS, with configuration in /etc/resolv.conf.

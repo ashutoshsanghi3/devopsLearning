@@ -1,0 +1,28 @@
+normal pod in k8s->
+apiversion:
+kind:
+metadata:
+	-name
+	-label
+	-namespace
+spec:
+
+for replicas ->
+spec:
+	-replicas
+	-selector
+		-matchLabels
+	-template
+		-metadata
+			-labels
+		spec
+
+the template in replicas is a pod
+
+3 types of labels ->
+First -> metadata.labels -> label of object in kind
+Second -> spec.selector.matchLabels.app:nginx -> 
+	1.It tells Kubernetes: "Select only pods that have the label app: nginx."
+	2.The selector must match the labels in the pod template
+
+Third -> template.metadata.labels -> labels inside the pod template

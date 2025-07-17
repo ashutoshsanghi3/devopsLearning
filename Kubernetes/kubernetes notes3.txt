@@ -1,0 +1,114 @@
+replicaset -> container restart,pod replaced
+
+Replicas table ->
+
+Serial Number | Name 	| Image Name | Desired Replicas | Actual Replicas
+
+	1	frontend     nginx		3
+
+
+
+Replica controller will take care that actual replicas are same as desired replicas
+
+Pod table created from replicas->
+
+Serial Number | Pod Name 	| Image Name 	  | Node 	| Desired state 	| Actual State
+
+	1	 frontend-		nginx  	   kworker1   		Running			-
+	2	 frontend-		nginx	   kworker2   		Running			-
+	3	 frontend-		nginx	   kworker1		Running			-
+
+scheduler will take care to assign to node
+pod controller will take care that actual state is same as desired state 
+	
+if container inside pod is deleted,kubelet will take care to replace that
+if pod is deleted,replication controller will take care to make entries in pod table and scheduler will schedule pods to different nodes
+
+Correct Flow When a Node Goes Down in Kubernetes:-
+✅ API Server updates etcd when a node is unresponsive.
+✅ Node Controller marks the node as unhealthy and evicts pods after a timeout.
+❌ Node Controller does NOT replace pods—it only removes them from the API Server.
+✅ Replication Controller (or Deployment, StatefulSet, etc.) schedules new pods on available nodes.
+❌ Pods are not rescheduled immediately—eviction happens after a default 5-minute delay (configurable).
+
+when you create a deployment ,it internally creates a replicaset and it internally creates a pod and gradually increase and decrease replicas 
+
+Deployment Table ->
+Serial Number | Name 	| Image Name | Desired State | Current State
+
+	1	frontend     nginx	   Running		-
+
+deployment will internally create replica table and it will inside create pod table 
+deployment controller will create replica set
+deployment controller will take care in this to make desired state same as current state
+
+How Deployment Creates and Manages a ReplicaSet (Step-by-Step):-
+1. User creates a Deployment → Kubernetes stores it in etcd.
+2. Deployment Controller detects the new Deployment → Creates a ReplicaSet.
+3. ReplicaSet ensures the required number of Pods → Creates and manages Pods.
+4. Kubernetes Scheduler assigns Pods to available nodes → Pods start running.
+5. Deployment continuously monitors the ReplicaSet → Ensures desired Pods are running.
+6. If a Pod fails, the ReplicaSet automatically replaces it → Maintains availability.
+7. When updating a Deployment (e.g., new image):
+
+A new ReplicaSet is created for the update.
+The old ReplicaSet is gradually scaled down while new Pods are created.
+8. Old ReplicaSet is retained (scaled to zero) → Enables easy rollback.
+
+✅ Deployment → ReplicaSet → Pods (Deployment controls rollout, ReplicaSet manages Pods).
+✅ Automatic healing, updates, and rollbacks handled efficiently.
+
+What Happens When a Deployment is Updated?
+When you update a Deployment (e.g., change the container image), Kubernetes does NOT modify the existing ReplicaSet. 
+Instead:
+-A New ReplicaSet is Created for the updated Deployment.
+-Pods from the Old ReplicaSet are Gradually Scaled Down, while new Pods are created from the new ReplicaSet.
+-Once the update is complete, the old ReplicaSet remains but is scaled to zero replicas (for rollback purposes).
+
+replicaset feature->
+auto scaling,auto healing
+
+deployment -> rolling update, rollback, recreate
+rolling update -> one by one pod will be deleted and new pods are created simultaneously
+recreate-> all pods will be deleted and the new pods will be created
+
+label
+kubectl get pod -l {labelname}={labelvalue} -> it will find pods with same labelname and labelvalue
+
+namespace
+
+
+
+between pods in a cluster,one pod can talk to another using cluster ip,it uses service discovery,load balancer
+if one external service wants to talk to pod in a cluster,it is either trusted or untrusted 
+nodeport	 
+services
+
+we should give same label in selector in service as in label in deployment
+we have to give one service for one deployment
+
+3 types of services->
+clusterip -> it supports service discovery,load balancer.with clusterip,2 pods can talk to each other inside cluster
+nodeport 
+load balancer
+
+by default service is of clusterip 
+
+port in ports in spec in yaml file is port of clusterip
+targetport in ports in spec in yaml file is the port of pod 
+nodeport
+
+for nodeport,in browser we can access using nodeip:nodeport
+and in clusterip,in terminal we can access using clusterip:port
+
+as long as we are working within cluster ,we can use clusterip
+for trusted internal customers outside the cluster,we can use and give nodeport with the machine's ip
+we can create load balancer for external untrusted customers which will give public ip and they can use that with load balancer's port that is given by load balancer
+
+we can use 1 load balancer for multiple services
+
+ip in ip in which we delivery message from pod in one node to pod in another node through proxy
+in which we havee from and to pod address with message is being wrapped by from and to address of node
+
+proxy continously talks to master node api server
+

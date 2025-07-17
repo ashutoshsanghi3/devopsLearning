@@ -1,0 +1,109 @@
+Kubernetes is an open-source enterprise level container orchestration platform that automates the deployment, management, and scaling of containerized applications.
+
+
+master has 4 components
+- kube-apiserver
+- kube-controller
+- kube-scheduler
+- etcd cluster
+
+The master node, also called the control plane, is responsible for managing the Kubernetes cluster. It ensures that the cluster maintains the desired state by scheduling workloads, handling cluster-wide decisions, and monitoring the health of nodes and pods.
+
+Api server -> 
+
+kube-apiserver is the component to which we talk to.
+kubectl -> equivalent of docker client
+kubectl will convert request to rest based request and send to api server and also send secret keys,access keys to apiserver.
+generally kubetctl talks to api server
+
+api server will do 4 things in this order
+	-authenticate
+	-authorize
+	-validate -> it checks whether the request is well formed
+	-talk to etcd -> which means it can do curd operations
+
+The API Server can be scaled horizontally (multiple instances behind a load balancer). It supports TLS encryption for secure communication.
+
+Etcd ->
+
+etcd is an nosql database , is a key value store
+etcd is a highly available, distributed key-value store that acts as Kubernetes’ primary data store. It holds all cluster configuration, state, and metadata.
+
+every master has different etcd
+
+except for api server,nobody can directly talk to etcd.everybody has to go through apiserver to talk to etcd.
+
+Controller ->
+
+controller is the one who controls all operations .it works with api server and anytime pod crashes ,controller comes to know about it.
+
+controller will keep looking at etcd and if there is any issue,controller comes to know about it.
+
+The Controller Manager is responsible for running controller processes, which continuously monitor the cluster and ensure the actual state matches the desired state.
+
+Scheduler ->
+
+the moment there is entry in pod table and we don't know which machine it will run,scheduler will automatically come up and run one of the algorithms to find which in machine pod can be created
+
+The Scheduler assigns unassigned Pods to worker nodes based on resource availability, constraints, and scheduling policies.
+
+The Kubernetes scheduler is a crucial component of the Kubernetes control plane responsible for assigning Pods to Nodes. It ensures that Pods are matched to Nodes so that the Kubelet can run them. 
+
+Kube-scheduler selects an optimal node to run newly created or not yet scheduled (unscheduled) pods.
+
+In a cluster, Nodes that meet the scheduling requirements for a Pod are called feasible nodes. If none of the nodes are suitable, the pod remains unscheduled until the scheduler is able to place it.
+
+worker has 3 components
+- kubelet
+- kube proxy
+- container runtime(CRI) like containerd or crio
+
+The worker node also called data plane is responsible for running the workloads (containers) scheduled by the master node. It communicates with the control plane to receive instructions and report the status of running applications. 
+
+all the kubernetes components runs on master node
+execpt for kubelet and CRI ,all components run as pods
+
+kubelet: An agent running on each worker node that ensures containers are running in a pod. It receives pod specifications from the API server and manages the container lifecycle accordingly.
+kubelet is a daemon
+kubelet is like a local manager ,is responsible for creating and running pod
+apiserver will talk to kubelet to talk with container runtime
+
+kube-proxy: Maintains network rules on nodes, enabling communication to pods from network sessions inside or outside of the cluster. It handles traffic routing and load balancing for service endpoints.
+proxy runs on every worker node and understands the networking of every node, it maintains network rules to route traffic to the correct pod and provides load balancing capability
+
+Container Runtime: The software responsible for running containers. Kubernetes supports various container runtimes, such as Docker, containerd, and CRI-O, which facilitate the actual execution of containerized applications.
+
+container runtime is like docker which actually runs containers
+Pod -> pod is a group of one or more containers
+all the containers in a pod are co-located meaning all containers will run in a same node
+all containers in a pod are co-scheduled meaning all containers will be scheduled to come up together at the same time.
+
+side card container
+init container
+differences for 6 namespaces in docker with kubernetes -> 
+
+Pods share the same:
+
+Network space (same IP address, same network interface).
+File system space (same volume can be mounted on all containers in the pod).
+IPC namespace (shared memory, semaphores, etc.).
+
+Pods do not share the same:
+
+Hostname (UTS namespace is separate).
+User namespace (user IDs can be different).
+Process (PID) namespace (separate by default but can be shared).
+
+2 containers in a pod can talk to each other using localhost 
+
+Why Pods Over Just Containers? ->
+
+In theory, you could achieve some of these benefits in Docker by manually setting up shared networks and volumes.
+However, Pods provide a built-in, standardized way to:
+✔ Deploy multiple tightly coupled containers together
+✔ Ensure network and storage sharing without extra configuration
+✔ Simplify sidecar container patterns
+✔ Improve scaling, scheduling, and load balancing
+
+🚀 Think of a Pod as a "mini-host" that runs multiple containers as a single unit!
+

@@ -1,0 +1,178 @@
+
+coredns
+raft algorithm
+daemonset
+-monitoring
+
+create a deamonset
+
+statefulset -> when we create it,along with replicaset we create a service,we give requests to the primary pod only and if it crashes we give request to the secondary pod and primary secondary and other are based on when they are created
+replicaset-with-in2
+
+imperative -> kubetcl create,deploy,etc. that types of commands
+declarative -> yaml based file type command
+
+network policy
+ingress
+egress
+
+
+ingress in detail different from network policy's ingress
+ingress controller
+
+
+Scaling
+-HPA(Horizontal Pod Autoscaling) -> give minimum and maximum replicas of pod
+-VPA(Vertical Pod Autoscaling) -> you give criteria for which you can add more resources like CPUs and memory
+-CA(Cluster AutoScaler) -> based on the cluster,you can add more machines
+
+managed Kubernetes cluster -> cluster managed by kuberentes provider eg eks,aks
+
+NodeName -> when you want to schedule pod on a specific node then you will use this
+NodeLabel -> when you want to schedule pod on a group on nodes then you will use this
+
+Taints and Tolerations
+
+affinity 
+-pod affinity -> 2 pods are coming together
+-node affinity -> Node affinity determines which nodes a pod can be scheduled on, based on node labels.
+pod will go to that node only
+anti affinity
+
+job
+one time job 
+cronjob
+
+cronjob using in k8s not in linuc-> reasons->
+1.replacmenet of pods when they crash
+2.dns service lookup
+3.control access
+
+args in jobs in k8s is equal to cmd in docker
+command in jobs in k8s is equal to entrypoint in docker
+
+high availability of master node
+
+top,logs,describe for inspecting pod resource usage
+static pods
+
+rbac->
+subject
+ -user
+ -group
+ -serviceaccount -> you will give access to service instead of user
+roles
+ -action(get,list,create)
+   -object(pod,service,etc.)
+rolesbinding 
+ -user
+ -role
+ -namespaces
+within nodes we have a virtual cluster called namespace
+ 
+subject and roles have many to many relationship
+
+in rbac,there is config and context
+clusterRole and clusterRoleBinding are not namespaces
+when you create a role to bind to subject you use roleBinding
+and when you create clusterRole to bind to subject you use clusterRoleBinding
+
+kubectl config use-context kubernetes-admin@kubernetes
+it will change the user to kubernetes-admin
+
+configMap
+secrets
+
+whether you create secret or configmap you have to inject into pod as volume or environmental variables
+secrets are encoded by default
+
+create secret from file -> kubectl create secret generic database-app-secret --from-file="database-data.txt"
+decode a secret -> kubectl get secret {secret name} -o jsonpath={.data}
+configMap is plain text
+ you should make secrets more secure by
+	-using rbac,you can limit access of secrets
+	-don't give access to etcd
+	-encrypt data in etcd
+	-restrict pod access
+
+encode -> echo -n 'admin'|base64 -> it will encode admin and return encoded
+decode -> echo bXlwYXNzd29yZA==|base64 --decode -> it will decode word and return decoded 
+
+kubectl get secret test -o yaml > examplesecret.yaml ,through this even if yaml gets deleted we can get the encoded username password from creating the yaml back and this is not secure.
+
+environment vairable -> variable -> static
+volume -> directory -> dynamic
+
+Volumes->
+EmptyDir -> is like tempfs in docker
+eg.when you want to share real time data between 2 containers we can use emptydir
+HostPath -> is like bindmount in docker
+
+NFS,EBS,EFS
+
+Persistent Volume Claim(PVC) -> we will create pvc
+Persistent Volume(PV) -> administrator will create pv
+
+when we want to mount a volume to pod we create pvc
+for its yaml,
+-size
+-storage class
+-access
+
+pvc should match to pv
+we will create pvc
+
+it is not possible for 1 pvc to get bound to multiple pv and vice versa.pv and pvc has one to one relationship
+
+pvc is getting mounted into the pod and pvc is bound to pv and pv is connected to storage
+
+pvc is created by developers
+pv is created by storage admins
+
+pv is not a namespace object
+pvc is a namespace object
+
+storage in use protection
+pv cant be deleted until pvc is not bound and it can't be deleted until pod is not bound to it
+
+provisioning of pv:
+static,dynamic
+
+storageClass
+
+reclaiming policy is attribute of pv
+reclaiming volume
+-retain
+-delete
+-recycle
+
+access mode in pv:
+readwriteonce
+readwritemany
+readwriteoncepod
+readonlymany
+
+apiserver listens on 6443
+
+kubectl drain node -> remove all pods on a node and cordons the node
+kubectl cordon node -> make future pods unschedulable on a node
+
+cordon and drains for maintenance purposes
+
+taints and tolerations are for specific pod
+
+
+Kubernetes security
+1.RBAC,ABAC
+2.Network policy
+3.ingress,service mesh
+4.docker image scanning
+5.reduce image size
+
+iptables 
+
+openshift
+
+securitycontext
+helm 
+charts
