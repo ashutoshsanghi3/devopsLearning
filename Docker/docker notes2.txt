@@ -1,0 +1,62 @@
+docker stop $(docker ps -a -q) -> stop all containers
+docker rm $(docker ps -a -q) -> remove all containers
+docker run -d --memory-reservation=750m {image_name}
+
+--memory-reservation -> soft limit of memory
+--memory -> hard limit ,beyond which container will be killed after some time
+--memory-swap -> amount of memory it is allowed to swap to swap space after another process wants to come to memory
+--oom-kill-disable  -> By default, if an out-of-memory (OOM) error occurs, the kernel kills processes in a container. To change this behavior, use the --oom-kill-disable option. Only disable the OOM killer on containers where you have also set the -m/--memory option. 
+
+--cpus=<value> -> how much available cpu resource container can use
+
+cpu and memory should be mentioned alongside container
+
+docker top {container_id}/{container_name} -> it shows for one container id
+
+docker stats -> it shows for all containers the process id, cpu usage,memory usage,etc.
+systemctl start docker
+systemctl status docker
+systemctl stop docker
+systemctl disable docker -> when we restart the system ,it will not automatically restart docker
+systemctl enable docker -> when we restart the system ,it will automatically restart docker
+
+creating an image ,it is mandatory to start with an image
+DockerFile->
+1.it is ok to have multiple FROM in a docker file
+2.FROM defines the base layer of an image
+3.FROM is a mandatory command of Dockerfile
+
+the only command that makes sense to come before FROM is arg 
+
+docker build -t {image_name_to_create} . -> create an image from dockerfile that docker will pick up
+run command is used to execute command at build time
+
+docker build -t myrun -f {DockerFile} . -> create am image from dockerfile user give 
+
+
+How Docker Builds an Image Step by Step From DockerFile:-
+✔️ Docker does not create a "hidden" or "internal" container permanently, but rather, it temporarily spins up a container for each RUN instruction to execute the command, then commits the result as a new layer in the image, not inside a persistent container.
+✔️ COPY and ADD do not run in a container but just modify the image's filesystem.
+✔️ Each command in a Dockerfile adds a new layer to the image.
+
+image layered caching 
+
+Docker Layered Caching: How It Works 
+
+Docker uses layered caching to speed up image builds and avoid unnecessary re-execution of commands. Each instruction in a Dockerfile creates a layer, and if a layer hasn't changed, Docker reuses the cached version instead of rebuilding it.
+
+cmd vs entry point are both used on runtime
+
+cmd is command that defines default instructions to execute when you are starting a container and it creates a layer
+if you give a command after creating container using docker run,default instructions will not get executed
+and it will be overwritten
+
+entry point will convert your container to an executable
+if you give a command after creating container using docker run, it will append it as argument
+
+if we use [] in dockerfile,it will execute whatever inside in shell ,and this works with run,cmd,entry point
+
+
+if we give cmd and entry point in dockerfile,entry point will get executed and cmd will become a parameter of entry point
+
+ENV for environment variables in dockerfile

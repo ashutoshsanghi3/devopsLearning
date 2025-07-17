@@ -1,0 +1,50 @@
+docker container prune ->remove all stopped container
+cow -> copy on write
+docker rmi {image_name}/{image_id} -> remove image
+docker pull {image_name} -> download image
+
+/var/lib/docker -> root folder of docker
+images are layered files system
+container is just process on host system
+
+6 different Linux kernel characterstics / spaces
+docker stop -> like graceful shutdown
+docker kill ->might corrupt like pressing long press shutdown
+docker exec -it {container_id} bash -> get inside the running container
+docker run -it {container_id} bash -> create and get inside the container
+docker attach -> attach to process id 1 and after ctrl+c it terminates the process id 1
+docker exec -> create a new terminal and run inside it 
+docker pause {container_id} -> pause the container
+docker unpause {container_id} -> resume the container
+docker commit -m "message" {container_id} {image_name you want to give} -> create image from existing container 				and its size also increases with increase of any files or modules added
+
+docker image history {image_name}/{image_id} ->shows history of image
+docker run --restart=always {image_name} -> it will always restart the container if container crashes automatically
+docker run -d -p 8080:80 nginx/{image_name} -> 
+				-d → Runs the container in detached mode (in the background).
+				-p 8080:80 → Maps port 8080 on the host to port 80 inside the container (where Nginx serves HTTP).
+				nginx → Uses the official Nginx image from Docker Hub.
+first 80 is of host and second 80 is of container
+docker push {username/image_name} -> push image to dockerhub
+/var/lib/docker/containers -> writable layer of containers
+
+docker image inspect {image_name}/{image_id} -> shows full features of image
+
+-Docker images use a layered file system where each layer is immutable.
+-Containers create a writable layer on top of the base image.
+-If a file is modified in a container, Copy-on-Write (CoW) ensures that:
+-The system first checks if the file exists in the writable layer.
+-If not, it checks lower layers until the file is found.
+-A copy of the file is then placed in the writable layer, where modifications occur.
+
+writable layer stores any changes made during the container's execution, such as:
+
+Files created or modified
+Installed packages
+Configuration changes
+
+dangling/orphaned container
+
+when we create container it refers to image but when we stop it ,it refers to both image and writable layer
+
+we can change the images stored location by changing the storage driver form docker info from overlay2 to another 

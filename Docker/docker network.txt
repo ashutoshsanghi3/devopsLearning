@@ -1,0 +1,46 @@
+7 important things to remember in docker netowrk->
+ip address -> unique routable address given to a device on a network which follows ip protocols
+
+ethernet card / network interface card -> An Ethernet card or Network Interface Card (NIC) is a hardware component that connects a computer or device to a 					network. It enables communication by sending and receiving data over a network using Ethernet protocols. NICs can be 					built into a device's motherboard or exist as separate expansion cards (PCIe, USB, etc.).
+
+ethernet cable -> An Ethernet cable is a physical cable used to connect network devices, such as computers, routers, and switches. It transmits data using 		electrical signals or light (fiber optic).
+
+network switch -> bordcasting ip,arp cache related
+gateway -> connects between 2 different types of network
+nating/denating -> NAT (Network Address Translation) is a technique used to modify IP addresses in packets. It allows multiple devices on a private network to share a single public IP address.
+
+		NATing – Converting private IP addresses (used inside a local network) to a public IP address for internet access.
+		DeNATing – Translating public IP addresses back to private ones when data returns to the local network.		
+
+subnetting -> Subnetting is the process of dividing a large IP network into smaller subnetworks (subnets). 
+
+
+when you install docker,docker automatically creates a network switch called docker 0. 
+its ip range is default : 172.17.0.1 - 172.17.255.255 with cird 172.17.0.0/16
+when you get a vm ,you have a root NIC in the vm called eth 0
+container also has eth 0
+
+docker can support 6 networks
+3 are only available in default mode and 3 in docker swarm mode. In default these are the networks:
+- Bridge network
+- Host network
+- None network
+
+Bridge network -> 
+by default container is connected to default bridge network
+container is connected to docker 0 only
+
+docker has only 1 host and 1 none network but we can create bridge networks
+
+docker network create mybridge -> will create a network "mybridge" and internally create a new network switch which is different from docker 0 and it cannot talk with containers inside docker 0 and vice versa.
+docker run -d --net {bridge_network} nginx -> create container inside {bridge_network} and not inside docker0
+
+Host Network -> 
+if you create container inside host network it will automatically connected to the host machine's network itself so we don't have to do post forwarding.
+and it will not have ip address 
+we can't create container with same image in host network like nginx,tomcat.they can only have 1 container running on their port.
+
+
+docker network connect {network_name} {container of another network} -> Connect container to a different network
+
+automatic bin packing

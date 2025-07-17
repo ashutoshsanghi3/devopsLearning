@@ -1,0 +1,58 @@
+docker 
+
+from 1 image you can have multiple containers
+from container you can create image
+but you will always start from image
+images are readonly file system
+images are layered file system which are essentialy folders upon folders which are made from dockerfile
+image vs container
+An image is essentially a snapshot of a file system and settings that you want to run inside a container.
+It serves as a blueprint for creating containers.
+we create image from dockerfile
+image --> container
+
+vm has snapshots and if we restore it,we won't lose it
+docker container has snapshots which are stored differently from vm 
+daemon in Linux is background process
+
+docker containers are ephemeral,ephemeral is short lived and only if there is no process inside container
+by default, container is in attached mode
+docker container is just a process on the host machine
+
+docker run -d nginx ->go in detached mode
+docker run -it {image_name} bash -> create and get inside the container and inside it open bash
+docker start {container_id} -> start the container
+docker exec -it {container_id} bash -> execute the existing container and inside open bash
+
+Namespaces:
+6 characteristics for differences between 2 systems that look same but are not same
+1. File System
+2. Processes running
+3. Network
+	IP
+	Sockets
+	Ports
+4. User
+5. Hostname
+6. IPC vs RPC
+
+4 characteristic of docker
+images,container,network,data volumes
+
+images are stored in /var/lib/docker/overlay2,overlay2 is default storage driver
+btrfs,aufs are some other storage driver
+container is just like a vm
+docker exec or attach
+cow (copy on write ) -> we can copy for writing purposes from uppermost layer of image ,if we don't find it then we go to lower layers one by one and check if the functionality is there.
+lesser the number of layers ,the better is the runtime performance.
+
+docker container is an instance of containerd-shim-run-v2
+with every container ,one containerd-shim-run-v2 instance is created
+containerd-shim-run-v2 manages the lifecycle of container
+containerd-shim-run-v2 is inside /usr/bin
+container is just a process on host machine
+if we start a container, a copy of vm is running inside it
+
+replacing docker(shim) with containerd
+
+containers are managed using namespace and cgroups
